@@ -1,0 +1,79 @@
+job: extension
+config:
+  name: my_first_flux_lora_v1
+  process:
+  - type: sd_trainer
+    training_folder: /teamspace/studios/this_studio/output
+    device: cuda:0
+    network:
+      type: lora
+      linear: 16
+      linear_alpha: 16
+    save:
+      dtype: float16
+      save_every: 250
+      max_step_saves_to_keep: 4
+    datasets:
+    - folder_path: /teamspace/studios/this_studio/dataset
+      caption_ext: txt
+      caption_dropout_rate: 0.05
+      shuffle_tokens: false
+      cache_latents_to_disk: true
+      resolution:
+      - 512
+      - 768
+      - 1024
+    train:
+      batch_size: 1
+      steps: 2000
+      gradient_accumulation_steps: 1
+      train_unet: true
+      train_text_encoder: false
+      content_or_style: balanced
+      gradient_checkpointing: true
+      noise_scheduler: flowmatch
+      optimizer: adamw8bit
+      lr: 0.0001
+      ema_config:
+        use_ema: true
+        ema_decay: 0.99
+      dtype: bf16
+    model:
+      name_or_path: black-forest-labs/FLUX.1-schnell
+      token: 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
+      is_flux: true
+      quantize: true
+    sample:
+      sampler: flowmatch
+      sample_every: 250
+      width: 1024
+      height: 1024
+      prompts:
+      - "photo r\xE9aliste d'une femme \xE2g\xE9e de 20 ans, fond blanc, haute r\xE9\
+        solution"
+      - "photo r\xE9aliste d'une femme \xE2g\xE9e de 30 ans, fond blanc, haute r\xE9\
+        solution"
+      - "photo r\xE9aliste d'une femme \xE2g\xE9e de 40 ans, fond blanc, haute r\xE9\
+        solution"
+      - "photo r\xE9aliste d'une femme \xE2g\xE9e de 50 ans, fond blanc, haute r\xE9\
+        solution"
+      - "photo r\xE9aliste d'une femme \xE2g\xE9e de 60 ans, fond blanc, haute r\xE9\
+        solution"
+      - "photo r\xE9aliste d'un homme \xE2g\xE9 de 20 ans, fond blanc, haute r\xE9\
+        solution"
+      - "photo r\xE9aliste d'un homme \xE2g\xE9 de 30 ans, fond blanc, haute r\xE9\
+        solution"
+      - "photo r\xE9aliste d'un homme \xE2g\xE9 de 40 ans, fond blanc, haute r\xE9\
+        solution"
+      - "photo r\xE9aliste d'un homme \xE2g\xE9 de 50 ans, fond blanc, haute r\xE9\
+        solution"
+      - "photo r\xE9aliste d'un homme \xE2g\xE9 de 60 ans, fond blanc, haute r\xE9\
+        solution"
+      neg: ''
+      seed: 42
+      walk_seed: true
+      guidance_scale: 4
+      sample_steps: 20
+meta:
+  name: my_first_flux_lora_v1
+  version: '1.0'
